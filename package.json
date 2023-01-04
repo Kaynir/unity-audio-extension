@@ -1,0 +1,15 @@
+{
+  "name": "com.kaynir.audio",
+  "version": "1.0.0",
+  "displayName": "Audio System",
+  "description": "Пакет управления музыкой и звуковыми эффектами.",
+  "unity": "2021.3",
+  "keywords": [
+    "audio, music, sounds, sfx"
+  ],
+  "author": {
+    "name": "Денис Знов",
+    "email": "kaynir.games@gmail.com",
+    "url": "https://github.com/Kaynir/audio-system"
+  }
+}
