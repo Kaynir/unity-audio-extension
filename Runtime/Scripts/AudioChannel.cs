@@ -10,6 +10,8 @@ namespace Kaynir.Audio
         [SerializeField] private string _volumeParameter = "MasterVolume";
 
         public AudioMixerGroup MixerGroup => _mixerGroup;
+        public string VolumeParameter => _volumeParameter;
+        public bool IsMuted => GetVolume() <= AudioConstants.MIN_VOLUME; 
 
         public void SetVolume(float volume)
         {
