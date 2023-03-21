@@ -8,12 +8,10 @@ namespace Kaynir.Audio.UI
         [SerializeField] protected SoundCollection _soundCollection = null;
         [SerializeField] protected Selectable _selectable = null;
 
-        public virtual void Play()
+        protected void Play()
         {
-            if (IsInteractable())
-            {
-                _soundCollection.PlaySound();
-            }
+            if (!IsInteractable()) return;
+            _soundCollection.Play();
         }
 
         protected bool IsInteractable()

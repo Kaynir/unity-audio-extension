@@ -5,49 +5,38 @@ namespace Kaynir.Audio
 {
     public class AudioSystem : MonoBehaviour
     {
-        public delegate AudioSource AudioEventHandler(AudioChannel channel);
+        private static AudioSystem _instance;
+        private static Dictionary<AudioChannel, AudioSource> _sources;
 
-        [SerializeField] private List<AudioChannel> _channels = new List<AudioChannel>();
-
-        private Dictionary<AudioChannel, AudioSource> _sources;
-
-        private void Awake()
+        public static void Init()
         {
-            InitializeSources();
+            if (_instance) Destroy(_instance.gameObject);
 
-            SoundCollection.OnSourceRequested += RetrieveSource;
-            MusicSource.OnSourceRequested += RetrieveSource;
-        }
-
-        private void OnDestroy()
-        {
-            SoundCollection.OnSourceRequested -= RetrieveSource;
-            MusicSource.OnSourceRequested -= RetrieveSource;
-        }
-
-        private void InitializeSources()
-        {
+            _instance = new GameObject("AudioSystem").AddComponent<AudioSystem>();
             _sources = new Dictionary<AudioChannel, AudioSource>();
-            _channels.ForEach(ch => _sources[ch] = CreateSource(ch));
+
+            DontDestroyOnLoad(_instance.gameObject);
         }
 
-        private AudioSource CreateSource(AudioChannel channel)
+        public static AudioSource GetAudioSource(AudioChannel channel)
+        {
+            if (!_sources.ContainsKey(channel))
+            {
+                _sources[channel] = CreateAudioSource(channel);
+            }
+
+            return _sources[channel];
+        }
+
+        private static AudioSource CreateAudioSource(AudioChannel channel)
         {
             AudioSource source = new GameObject(channel.name).AddComponent<AudioSource>();
-            
-            source.transform.SetParent(transform);
+
+            source.transform.SetParent(_instance.transform);
             source.outputAudioMixerGroup = channel.MixerGroup;
             source.playOnAwake = false;
 
             return source;
-        }
-
-        private AudioSource RetrieveSource(AudioChannel channel)
-        {
-            if (_sources.TryGetValue(channel, out AudioSource source)) return source;
-
-            Debug.LogWarning($"Failed to retrieve source for [{channel}].");
-            return null;
         }
     }
 }

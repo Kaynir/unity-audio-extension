@@ -4,9 +4,6 @@ namespace Kaynir.Audio.UI
 {
     public class HoverSound : SelectableSound, IPointerEnterHandler
     {
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            Play();
-        }
+        public void OnPointerEnter(PointerEventData eventData) => Play();
     }
 }

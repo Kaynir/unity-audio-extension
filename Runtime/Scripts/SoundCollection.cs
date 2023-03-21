@@ -1,16 +1,13 @@
 using UnityEngine;
-using static Kaynir.Audio.AudioSystem;
 
 namespace Kaynir.Audio
 {
     [CreateAssetMenu(menuName = "Scriptable Objects/Audio/Sound Collection")]
     public class SoundCollection : ScriptableObject
     {
-        public static event AudioEventHandler OnSourceRequested;
-
         [SerializeField] private AudioChannel _channel = null;
         [SerializeField] private AudioClip[] _clipVariations = null;
-        
+
         [Header("Volume Settings:")]
         [SerializeField, Range(0f, 1f)] private float _defaultVolume = 1f;
         [SerializeField, Range(0f, .5f)] private float _volumeOffset = .2f;
@@ -21,34 +18,30 @@ namespace Kaynir.Audio
         [SerializeField, Range(0f, .5f)] private float _pitchOffset = .15f;
         [SerializeField] private bool _randomizePitch = false;
 
-        [ContextMenu("Play Sound")]
-        public void PlaySound()
-        {
-            AudioSource source = OnSourceRequested?.Invoke(_channel);
-            if (source) PlaySound(source);
-        }
-
-        private void PlaySound(AudioSource source)
+        public void Play(AudioSource source)
         {
             source.volume = GetVolume();
             source.pitch = GetPitch();
             source.PlayOneShot(GetAudioClip());
         }
 
+        [ContextMenu("Play")]
+        public void Play() => Play(AudioSystem.GetAudioSource(_channel));
+
         private float GetVolume()
         {
-            return _randomizeVolume 
+            return _randomizeVolume
             ? GetRandomValue(_defaultVolume, _volumeOffset)
             : _defaultVolume;
         }
 
         private float GetPitch()
         {
-            return _randomizePitch 
+            return _randomizePitch
             ? GetRandomValue(_defaultPitch, _pitchOffset)
             : _defaultPitch;
         }
-        
+
         private float GetRandomValue(float value, float offset)
         {
             return Random.Range(value - offset, value + offset);
@@ -56,7 +49,7 @@ namespace Kaynir.Audio
 
         private AudioClip GetAudioClip()
         {
-            return _clipVariations.Length > 1 
+            return _clipVariations.Length > 1
             ? _clipVariations[Random.Range(0, _clipVariations.Length)]
             : _clipVariations[0];
         }

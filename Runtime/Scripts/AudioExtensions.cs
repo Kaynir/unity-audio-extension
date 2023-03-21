@@ -9,7 +9,6 @@ namespace Kaynir.Audio
         public static void SetVolume(this AudioMixer mixer, string parameter, float volume)
         {
             if (mixer.SetFloat(parameter, VolumeToDecibels(volume))) return;
-
             Debug.LogWarning($"{parameter} is not exposed for {mixer.name}.");
         }
 
@@ -38,7 +37,7 @@ namespace Kaynir.Audio
                                      decibels);
         }
 
-        public static IEnumerator FadeVolumeRoutine(this AudioSource source, float endVolume, float seconds)
+        public static IEnumerator FadeVolume(this AudioSource source, float endVolume, float seconds)
         {
             float startVolume = source.volume;
 

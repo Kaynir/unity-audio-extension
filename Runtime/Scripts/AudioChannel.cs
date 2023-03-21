@@ -7,27 +7,19 @@ namespace Kaynir.Audio
     public class AudioChannel : ScriptableObject
     {
         [SerializeField] private AudioMixerGroup _mixerGroup = null;
-        [SerializeField] private string _volumeParameter = "MasterVolume";
+        [SerializeField] private string _volumeID = "Master";
 
         public AudioMixerGroup MixerGroup => _mixerGroup;
-        public string VolumeParameter => _volumeParameter;
-        public bool IsMuted => GetVolume() <= AudioConstants.MIN_VOLUME; 
+        public string VolumeID => _volumeID;
 
         public void SetVolume(float volume)
         {
-            _mixerGroup.audioMixer.SetVolume(_volumeParameter, volume);
+            _mixerGroup.audioMixer.SetVolume(_volumeID, volume);
         }
 
         public float GetVolume()
         {
-            return _mixerGroup.audioMixer.GetVolume(_volumeParameter);
-        }
-
-        public void Mute(bool isMuted)
-        {
-            SetVolume(isMuted
-            ? AudioConstants.MIN_VOLUME
-            : AudioConstants.MAX_VOLUME);
+            return _mixerGroup.audioMixer.GetVolume(_volumeID);
         }
     }
 }
