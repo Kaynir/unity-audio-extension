@@ -31,20 +31,15 @@ namespace Kaynir.Audio
         private float GetVolume()
         {
             return _randomizeVolume
-            ? GetRandomValue(_defaultVolume, _volumeOffset)
+            ? Random.Range(_defaultVolume - _volumeOffset, _defaultVolume)
             : _defaultVolume;
         }
 
         private float GetPitch()
         {
             return _randomizePitch
-            ? GetRandomValue(_defaultPitch, _pitchOffset)
+            ? Random.Range(_defaultPitch - _pitchOffset, _defaultPitch + _pitchOffset)
             : _defaultPitch;
-        }
-
-        private float GetRandomValue(float value, float offset)
-        {
-            return Random.Range(value - offset, value + offset);
         }
 
         private AudioClip GetAudioClip()
