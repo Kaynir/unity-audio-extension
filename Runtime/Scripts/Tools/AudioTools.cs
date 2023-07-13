@@ -2,15 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Kaynir.Audio
+namespace Kaynir.Audio.Tools
 {
-    public static class AudioExtensions
+    public static class AudioTools
     {
-        public static void SetVolume(this AudioMixer mixer, string parameter, float volume)
-        {
-            if (mixer.SetFloat(parameter, VolumeToDecibels(volume))) return;
-            Debug.LogWarning($"{parameter} is not exposed for {mixer.name}.");
-        }
+        public static float MIN_DECIBELS = -80f;
+        public static float MAX_DECIBELS = 0f;
+
+        public static float MIN_VOLUME = 0f;
+        public static float MAX_VOLUME = 1f;
 
         public static float GetVolume(this AudioMixer mixer, string parameter)
         {
@@ -20,24 +20,27 @@ namespace Kaynir.Audio
             }
 
             Debug.LogWarning($"{parameter} is not exposed for {mixer.name}.");
-            return AudioConstants.MIN_VOLUME;
+            return MIN_VOLUME;
+        }
+
+        public static void SetVolume(this AudioMixer mixer, string parameter, float volume)
+        {
+            if (mixer.SetFloat(parameter, VolumeToDecibels(volume))) return;
+
+            Debug.LogWarning($"{parameter} is not exposed for {mixer.name}.");
         }
 
         public static float VolumeToDecibels(float volume)
         {
-            return Mathf.Lerp(AudioConstants.MIN_DECIBELS,
-                              AudioConstants.MAX_DECIBELS,
-                              volume);
+            return Mathf.Lerp(MIN_DECIBELS, MAX_DECIBELS, volume);
         }
 
         public static float DecibelsToVolume(float decibels)
         {
-            return Mathf.InverseLerp(AudioConstants.MIN_DECIBELS,
-                                     AudioConstants.MAX_DECIBELS,
-                                     decibels);
+            return Mathf.InverseLerp(MIN_DECIBELS, MAX_DECIBELS, decibels);
         }
 
-        public static IEnumerator FadeVolume(this AudioSource source, float endVolume, float seconds)
+        public static IEnumerator LerpVolumeRoutine(this AudioSource source, float endVolume, float seconds)
         {
             float startVolume = source.volume;
 

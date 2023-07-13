@@ -1,15 +1,15 @@
 {
-  "name": "com.kaynir.audio",
+  "name": "com.kaynir.audio-extension",
   "version": "1.0.0",
-  "displayName": "Audio System",
-  "description": "Пакет управления музыкой и звуковыми эффектами.",
-  "unity": "2021.3",
+  "displayName": "Audio Extension",
+  "description": "An extension of audio module for Unity.",
+  "unity": "2022.3",
   "keywords": [
-    "audio, music, sounds, sfx"
+    "audio, music, sound"
   ],
   "author": {
-    "name": "Денис Знов",
+    "name": "Denis Znov",
     "email": "kaynir.games@gmail.com",
-    "url": "https://github.com/Kaynir/audio-system"
+    "url": "https://github.com/Kaynir/audio-extension"
   }
 }
