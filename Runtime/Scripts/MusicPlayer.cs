@@ -6,44 +6,55 @@ namespace Kaynir.Audio
 {
     public class MusicPlayer : MonoBehaviour
     {
-        [SerializeField] private AudioClip clip = null;
-        [SerializeField] private AudioSource source = null;
+        private const float HALF_TRANSITION_RATE = .5f;
+
+        [SerializeField] private AudioClip audioClip = null;
+        [SerializeField] private AudioSource audioSource = null;
         [SerializeField] private bool allowRestart = false;
-        [SerializeField, Min(0f)] private float transitionTime = .5f;
+        [SerializeField, Min(0f)] private float fullTransitionTime = .5f;
 
         private void Awake()
         {
-            if (!source.playOnAwake) return;
-            
-            source.Stop();
-            SetTransition(clip, source.volume);
+            audioSource.Stop();
         }
 
-        public void SetTransition(AudioClip clip, float volume)
+        private void OnEnable()
         {
-            if (!allowRestart && source.isPlaying && source.clip == clip) return;
-
-            StopAllCoroutines();
-            StartCoroutine(TransitionRoutine(clip, volume));
+            if (!audioSource.playOnAwake) return;
+            SetTransition(audioClip, audioSource.volume);
         }
 
-        public void SetTransition(AudioClip clip) => SetTransition(clip, AudioTools.MAX_VOLUME);
-
-        private IEnumerator TransitionRoutine(AudioClip clip, float volume)
+        public void SetTransition(AudioClip audioClip, float volume)
         {
-            float lerpTime = transitionTime * .5f;
-
-            if (source.isPlaying)
+            if (!allowRestart && audioSource.IsPlaying(audioClip))
             {
-                yield return source.LerpVolumeRoutine(AudioTools.MIN_VOLUME, lerpTime);
-                source.Stop();
+                return;
             }
 
-            source.volume = AudioTools.MIN_VOLUME;
-            source.clip = clip;
-            source.Play();
+            StopAllCoroutines();
+            StartCoroutine(TransitionRoutine(audioClip, volume));
+        }
 
-            yield return source.LerpVolumeRoutine(volume, lerpTime);
+        public void SetTransition(AudioClip audioClip)
+        {
+            SetTransition(audioClip, AudioTools.MAX_VOLUME);
+        }
+
+        private IEnumerator TransitionRoutine(AudioClip audioClip, float volume)
+        {
+            float lerpTime = fullTransitionTime * HALF_TRANSITION_RATE;
+
+            if (audioSource.isPlaying)
+            {
+                yield return audioSource.LerpVolumeRoutine(AudioTools.MIN_VOLUME, lerpTime);
+                audioSource.Stop();
+            }
+
+            audioSource.volume = AudioTools.MIN_VOLUME;
+            audioSource.clip = audioClip;
+            audioSource.Play();
+
+            yield return audioSource.LerpVolumeRoutine(volume, lerpTime);
         }
     }
 }
