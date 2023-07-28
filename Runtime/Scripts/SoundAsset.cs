@@ -9,7 +9,7 @@ namespace Kaynir.Audio
     public class SoundAsset : ScriptableObject
     {
         [SerializeField] private List<AudioClip> variants = new List<AudioClip>();
-        [SerializeField] private List<SoundFilter> filters = new List<SoundFilter>();
+        [SerializeField] private List<AudioSourceFilter> filters = new List<AudioSourceFilter>();
 
         public void Play(AudioSource source, AudioClip clip)
         {

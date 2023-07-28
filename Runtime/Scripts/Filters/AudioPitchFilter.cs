@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Kaynir.Audio.Filters
 {
     [CreateAssetMenu(menuName = AssetMenuTools.FILTERS_PATH + "Pitch Filter")]
-    public class PitchFilter : SoundFilter
+    public class AudioPitchFilter : AudioSourceFilter
     {
         [SerializeField] private AnimationCurve curve = AnimationCurve.EaseInOut(0f, .8f, 1f, 1.2f);
 

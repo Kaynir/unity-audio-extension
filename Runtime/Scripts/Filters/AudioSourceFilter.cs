@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Kaynir.Audio.Filters
 {
-    public abstract class SoundFilter : ScriptableObject
+    public abstract class AudioSourceFilter : ScriptableObject
     {
         public abstract void Apply(AudioSource source, float scaleNormalized);
         

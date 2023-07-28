@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace Kaynir.Audio.Evaluations
 {
-    public class VelocityEvaluationSignal3D : EvaluationSignal
+    public class VelocityEvaluationSignal2D : EvaluationSignal
     {
-        [SerializeField] private Rigidbody body = null;
+        [SerializeField] private Rigidbody2D body = null;
 
         private void Update() => ExecuteSignal();
 
